@@ -1,13 +1,15 @@
 import React, { useState } from "react";
 import Logo from "../components/Logo";
 import Navigation from "../components/Navigation";
+
 const Blog = () => {
   const [content, setContent] = useState("");
+  const [error, setError] = useState(false);
   const handleSubmit = (e) => {
     e.preventDefault();
 
     if (content.length < 140) {
-      alert("noo");
+      setError(true);
     }
   };
 
@@ -23,6 +25,7 @@ const Blog = () => {
           placeholder="Message"
           onChangeCapture={(e) => setContent(e.target.value)}
         ></textarea>
+        {error && <p>Veuillez ecrire un minimum de 140 caractéres</p>}
         <input type="submit" value="Envoyer" />
       </form>
       <ul></ul>
