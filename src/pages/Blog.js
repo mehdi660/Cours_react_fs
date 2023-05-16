@@ -10,14 +10,13 @@ const Blog = () => {
   const [content, setContent] = useState("");
   const [error, setError] = useState(false);
 
-  useEffect(() => {
-    const getData = () => {
-      axios
-        .get("http://localhost:3004/articles")
-        .then((res) => setBlogData(res.data));
-    };
-    getData();
-  }, []);
+  const getData = () => {
+    axios
+      .get("http://localhost:3004/articles")
+      .then((res) => setBlogData(res.data));
+  };
+
+  useEffect(() => getData(), []);
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -31,6 +30,9 @@ const Blog = () => {
         date: Date.now(),
       });
       setError(false);
+      setAuthor("");
+      setContent("");
+      getData();
     }
   };
 
@@ -45,11 +47,13 @@ const Blog = () => {
           type="text"
           placeholder="Nom"
           onChange={(e) => setAuthor(e.target.value)}
+          value={author}
         />
         <textarea
           style={{ border: error ? "1px solid red" : "1px solid #61dafb" }}
           placeholder="Message"
-          onChangeCapture={(e) => setContent(e.target.value)}
+          onChange={(e) => setContent(e.target.value)}
+          value={content}
         ></textarea>
         {error && <p>Veuillez ecrire un minimum de 140 caractéres</p>}
         <input type="submit" value="Envoyer" />
